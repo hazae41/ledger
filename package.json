@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@hazae41/ledger",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Private and supply-chain hardened Ledger controller for TypeScript",
   "homepage": "https://github.com/hazae41/ledger",
   "repository": "github:hazae41/ledger",

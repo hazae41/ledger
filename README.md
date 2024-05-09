@@ -38,7 +38,8 @@ const { address, uncompressedPublicKey } = await Ledger.Ethereum.getAddressOrThr
 ```tsx
 const message = new TextEncoder().encode("Hello World")
 
-const { r, s, v } = await Ledger.Ethereum.signPersonalMessageOrThrow(connector, "44'/60'/0'/0/0", message)
+const rsvSignature = await Ledger.Ethereum.signPersonalMessageOrThrow(connector, "44'/60'/0'/0/0", message)
+const zeroHexSignature = ZeroHexSignature.from(rsvSignature)
 ```
 
 ### Sign a transaction at path
@@ -54,5 +55,13 @@ const transaction = ethers.utils.arrayify(ethers.Transaction.from({
   gasPrice,
 }).unsignedSerialized)
 
-const { r, s, v } = await Ledger.Ethereum.signTransactionOrThrow(connector, "44'/60'/0'/0/0", transaction)
+const rsvSignature = await Ledger.Ethereum.signTransactionOrThrow(connector, "44'/60'/0'/0/0", transaction)
+const zeroHexSignature = ZeroHexSignature.from(rsvSignature)
+```
+
+### Sign EIP712 typed message at path
+
+```tsx
+const rsvSignature = await Ledger.Ethereum.signEIP712HashedMessageOrThrow(connector, "44'/60'/0'/0/0", domain, message)
+const zeroHexSignature = ZeroHexSignature.from(rsvSignature)
 ```

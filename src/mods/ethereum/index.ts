@@ -167,7 +167,7 @@ export async function signPersonalMessageOrThrow(device: Connector, path: string
   const r = cursor.readAndCopyOrThrow(32)
   const s = cursor.readAndCopyOrThrow(32)
 
-  return RsvSignature.from({ r, s, v })
+  return RsvSignature.create({ r, s, v })
 }
 
 /**
@@ -272,7 +272,7 @@ export async function signTransactionOrThrow(device: Connector, path: string, tr
   //     v = (parity % 2) == 1 ? 0 : 1;
   // }
 
-  return RsvSignature.from({ r, s, v })
+  return RsvSignature.create({ r, s, v })
 }
 
 export async function trySignEIP712HashedMessage(device: Connector, path: string, domain: Uint8Array<32>, message: Uint8Array<32>): Promise<Result<RsvSignature, Error>> {
@@ -295,5 +295,5 @@ export async function signEIP712HashedMessageOrThrow(device: Connector, path: st
   const r = reader.readAndCopyOrThrow(32)
   const s = reader.readAndCopyOrThrow(32)
 
-  return RsvSignature.from({ r, s, v })
+  return RsvSignature.create({ r, s, v })
 }

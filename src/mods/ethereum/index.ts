@@ -185,7 +185,7 @@ function readLegacyUnprotectedOrThrow(transaction: Uint8Array) {
   /**
    * Decode the bytes as RLP
    */
-  const rlp = Rlp.toPrimitive(Readable.readFromBytesOrThrow(Rlp, transaction))
+  const rlp = Readable.readFromBytesOrThrow(Rlp, transaction).intoOrThrow()
 
   if (!Array.isArray(rlp))
     throw new Error(`Wrong RLP type for transaction`)
@@ -204,7 +204,7 @@ function readLegacyUnprotectedOrThrow(transaction: Uint8Array) {
   /**
    * Encode them as RLP
    */
-  return Writable.writeToBytesOrThrow(Rlp.fromPrimitive([nonce, gasprice, startgas, to, value, data]))
+  return Writable.writeToBytesOrThrow(Rlp.fromOrThrow([nonce, gasprice, startgas, to, value, data]))
 }
 
 export async function trySignTransaction(device: Connector, path: string, transaction: Uint8Array): Promise<Result<RsvSignature, Error>> {

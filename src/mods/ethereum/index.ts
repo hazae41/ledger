@@ -20,7 +20,7 @@ export interface AppConfigResult {
 
 export async function getAppConfigOrThrow(device: Connector): Promise<AppConfigResult> {
   const request = { cla: 0xe0, ins: 0x06, p1: 0x00, p2: 0x00, fragment: new Empty() }
-  const response = await device.requestOrThrow(request).then(r => r.unwrap().bytes)
+  const response = await device.requestOrThrow(request).then(r => r.getOrThrow().bytes)
 
   const arbitraryDataEnabled = Boolean(response[0] & 0x01)
   const erc20ProvisioningNecessary = Boolean(response[0] & 0x02)
@@ -61,7 +61,7 @@ export async function getAddressOrThrow(device: Connector, path: string): Promis
   const bytes = Writable.writeToBytesOrThrow(paths)
 
   const request = { cla: 0xe0, ins: 0x02, p1: 0x00, p2: 0x01, fragment: new Opaque(bytes) }
-  const response = await device.requestOrThrow(request).then(r => r.unwrap().bytes)
+  const response = await device.requestOrThrow(request).then(r => r.getOrThrow().bytes)
 
   const cursor = new Cursor(response)
 
@@ -88,7 +88,7 @@ export async function verifyAndGetAddressOrThrow(device: Connector, path: string
   const bytes = Writable.writeToBytesOrThrow(paths)
 
   const request = { cla: 0xe0, ins: 0x02, p1: 0x01, p2: 0x01, fragment: new Opaque(bytes) }
-  const response = await device.requestOrThrow(request).then(r => r.unwrap().bytes)
+  const response = await device.requestOrThrow(request).then(r => r.getOrThrow().bytes)
 
   const cursor = new Cursor(response)
 
@@ -122,7 +122,7 @@ export async function signPersonalMessageOrThrow(device: Connector, path: string
     writer.writeOrThrow(chunk)
 
     const request = { cla: 0xe0, ins: 0x08, p1: 0x00, p2: 0x00, fragment: new Opaque(writer.bytes) }
-    response = await device.requestOrThrow(request).then(r => r.unwrap().bytes)
+    response = await device.requestOrThrow(request).then(r => r.getOrThrow().bytes)
   }
 
   while (reader.remaining) {
@@ -130,7 +130,7 @@ export async function signPersonalMessageOrThrow(device: Connector, path: string
     const chunk = reader.readOrThrow(body)
 
     const request = { cla: 0xe0, ins: 0x08, p1: 0x80, p2: 0x00, fragment: new Opaque(chunk) }
-    response = await device.requestOrThrow(request).then(r => r.unwrap().bytes)
+    response = await device.requestOrThrow(request).then(r => r.getOrThrow().bytes)
   }
 
   const cursor = new Cursor(response)
@@ -206,7 +206,7 @@ export async function signTransactionOrThrow(device: Connector, path: string, tr
     writer.writeOrThrow(chunk)
 
     const request = { cla: 0xe0, ins: 0x04, p1: 0x00, p2: 0x00, fragment: new Opaque(writer.bytes) }
-    response = await device.requestOrThrow(request).then(r => r.unwrap().bytes)
+    response = await device.requestOrThrow(request).then(r => r.getOrThrow().bytes)
   }
 
   while (reader.remaining) {
@@ -222,7 +222,7 @@ export async function signTransactionOrThrow(device: Connector, path: string, tr
     const chunk = reader.readOrThrow(body)
 
     const request = { cla: 0xe0, ins: 0x04, p1: 0x80, p2: 0x00, fragment: new Opaque(chunk) }
-    response = await device.requestOrThrow(request).then(r => r.unwrap().bytes)
+    response = await device.requestOrThrow(request).then(r => r.getOrThrow().bytes)
   }
 
   const cursor = new Cursor(response)
@@ -251,7 +251,7 @@ export async function signEIP712HashedMessageOrThrow(device: Connector, path: st
   writer.writeOrThrow(message)
 
   const request = { cla: 0xe0, ins: 0x0c, p1: 0x00, p2: 0x00, fragment: new Opaque(writer.bytes) }
-  const response = await device.requestOrThrow(request).then(r => r.unwrap().bytes)
+  const response = await device.requestOrThrow(request).then(r => r.getOrThrow().bytes)
 
   const reader = new Cursor(response)
   const v = reader.readUint8OrThrow() - 27

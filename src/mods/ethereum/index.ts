@@ -3,7 +3,6 @@ import type { Uint8Array } from "@hazae41/bytes";
 import { Bytes } from "@hazae41/bytes";
 import { Rlp, RsvSignature } from "@hazae41/cubane";
 import { Cursor } from "@hazae41/cursor";
-import { Result } from "@hazae41/result";
 import { Connector } from "../apdu/index.js";
 import { Paths } from "../binary/paths.js";
 
@@ -17,10 +16,6 @@ export interface AppConfigResult {
   readonly starkv2Supported: boolean,
 
   readonly version: string
-}
-
-export async function tryGetAppConfig(device: Connector): Promise<Result<AppConfigResult, Error>> {
-  return await Result.runAndDoubleWrap(() => getAppConfigOrThrow(device))
 }
 
 export async function getAppConfigOrThrow(device: Connector): Promise<AppConfigResult> {
@@ -60,16 +55,6 @@ export interface GetAddressResult {
  * @param path 
  * @returns 
  */
-export async function tryGetAddress(device: Connector, path: string): Promise<Result<GetAddressResult, Error>> {
-  return await Result.runAndDoubleWrap(() => getAddressOrThrow(device, path))
-}
-
-/**
- * Just get the address
- * @param device 
- * @param path 
- * @returns 
- */
 export async function getAddressOrThrow(device: Connector, path: string): Promise<GetAddressResult> {
   const paths = Paths.from(path)
 
@@ -97,16 +82,6 @@ export async function getAddressOrThrow(device: Connector, path: string): Promis
  * @param path 
  * @returns 
  */
-export async function tryVerifyAndGetAddress(device: Connector, path: string): Promise<Result<GetAddressResult, Error>> {
-  return await Result.runAndDoubleWrap(() => verifyAndGetAddressOrThrow(device, path))
-}
-
-/**
- * Ask the user to verify the address and get it
- * @param device 
- * @param path 
- * @returns 
- */
 export async function verifyAndGetAddressOrThrow(device: Connector, path: string): Promise<GetAddressResult> {
   const paths = Paths.from(path)
 
@@ -126,10 +101,6 @@ export async function verifyAndGetAddressOrThrow(device: Connector, path: string
   const chaincode = cursor.readAndCopyOrThrow(32)
 
   return { uncompressedPublicKey, address, chaincode }
-}
-
-export async function trySignPersonalMessage(device: Connector, path: string, message: Uint8Array): Promise<Result<RsvSignature, Error>> {
-  return await Result.runAndDoubleWrap(() => signPersonalMessageOrThrow(device, path, message))
 }
 
 export async function signPersonalMessageOrThrow(device: Connector, path: string, message: Uint8Array): Promise<RsvSignature> {
@@ -207,10 +178,6 @@ function readLegacyUnprotectedOrThrow(transaction: Uint8Array) {
   return Writable.writeToBytesOrThrow(Rlp.fromOrThrow([nonce, gasprice, startgas, to, value, data]))
 }
 
-export async function trySignTransaction(device: Connector, path: string, transaction: Uint8Array): Promise<Result<RsvSignature, Error>> {
-  return await Result.runAndDoubleWrap(() => signTransactionOrThrow(device, path, transaction))
-}
-
 export async function signTransactionOrThrow(device: Connector, path: string, transaction: Uint8Array): Promise<RsvSignature> {
   const paths = Paths.from(path)
 
@@ -273,10 +240,6 @@ export async function signTransactionOrThrow(device: Connector, path: string, tr
   // }
 
   return RsvSignature.create({ r, s, v })
-}
-
-export async function trySignEIP712HashedMessage(device: Connector, path: string, domain: Uint8Array<32>, message: Uint8Array<32>): Promise<Result<RsvSignature, Error>> {
-  return await Result.runAndDoubleWrap(() => signEIP712HashedMessageOrThrow(device, path, domain, message))
 }
 
 export async function signEIP712HashedMessageOrThrow(device: Connector, path: string, domain: Uint8Array<32>, message: Uint8Array<32>): Promise<RsvSignature> {

@@ -25,13 +25,13 @@
     "@hazae41/phobos": "^1.0.10",
     "@hazae41/rimraf": "^1.0.1",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/node": "^20.14.10",
+    "@types/node": "^22.5.1",
     "@types/w3c-web-usb": "^1.0.10",
-    "rollup": "^4.18.0",
+    "rollup": "^4.21.2",
     "rollup-plugin-dts": "^6.1.1",
-    "rollup-plugin-node-externals": "^7.1.2",
-    "tslib": "^2.6.3",
-    "typescript": "^5.5.3"
+    "rollup-plugin-node-externals": "^7.1.3",
+    "tslib": "^2.7.0",
+    "typescript": "^5.5.4"
   },
   "exports": {
     ".": {
@@ -53,11 +53,11 @@
     "unit-tested"
   ],
   "dependencies": {
-    "@hazae41/apdu": "^1.0.0",
-    "@hazae41/binary": "^1.3.4",
-    "@hazae41/bytes": "^1.2.9",
-    "@hazae41/cubane": "^0.1.21",
-    "@hazae41/cursor": "^1.2.3",
-    "@hazae41/result": "^1.2.0"
+    "@hazae41/apdu": "^1.0.1",
+    "@hazae41/binary": "^1.3.5",
+    "@hazae41/bytes": "^1.2.11",
+    "@hazae41/cubane": "^0.2.1",
+    "@hazae41/cursor": "^1.2.4",
+    "@hazae41/result": "^1.3.1"
   }
 }
